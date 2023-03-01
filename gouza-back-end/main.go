@@ -2,20 +2,25 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"gouza-back-end/src/domain/common/logutils"
+	"gouza-back-end/src/domain/common/router"
+	"gouza-back-end/src/domain/ioc"
+	"gouza-back-end/src/domain/models/req"
 	"net/http"
 )
 
 func main() {
-
-	engine := gin.Default()
-	engine.GET("/JSONP", func(context *gin.Context) {
-		data := map[string]interface{}{
-			"foo": "bar",
+	webServer := gin.New()
+	webServer.Use(router.AuthMiddleWare())
+	webServer.POST(router.CREATE_USER_ROUTE, func(context *gin.Context) {
+		var createUserReq req.CreateUserReq
+		err := context.BindJSON(&createUserReq)
+		if err != nil {
+			logutils.LogInfo("创建用户绑定失败")
 		}
-
-		// /JSONP?callback=x
-		// 将输出：x({\"foo\":\"bar\"})
-		context.JSONP(http.StatusOK, data)
+		action, err := ioc.BuildUserAction()
+		info := action.CrateUserInfo(createUserReq)
+		context.JSON(http.StatusOK, &info)
 	})
-	engine.Run(":8080")
+	webServer.Run(":8080")
 }
