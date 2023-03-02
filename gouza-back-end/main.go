@@ -11,6 +11,7 @@ import (
 
 func main() {
 	webServer := gin.New()
+	webServer.Use(gin.Recovery())
 	webServer.Use(router.AuthMiddleWare())
 	webServer.POST(router.CREATE_USER_ROUTE, func(context *gin.Context) {
 		var createUserReq req.CreateUserReq
