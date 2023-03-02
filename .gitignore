@@ -2,7 +2,7 @@
 
 # dependencies
 miniprogram/node_modules
-miniprogram/miniprogram_npm
+miniprogram_npm
 # roadhog-api-doc ignore
 /src/utils/request-temp.js
 _roadhog-api-doc
