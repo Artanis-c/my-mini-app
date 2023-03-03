@@ -15,22 +15,9 @@ Component({
       text: "我的"
     }]
   },
-  lifetimes:{
-    created:function(){
-      console.log(   getCurrentPages())
-
-
-    }
-  }
-  ,
-  pageLifetimes: {
-    show: function () {
-      console.log("页面熏染")
-    }
-  }
-  ,
-  attached() {
-  },
+  lifetimes: {},
+  pageLifetimes: {},
+  attached() {},
   methods: {
     switchTab(e) {
       const data = e.currentTarget.dataset

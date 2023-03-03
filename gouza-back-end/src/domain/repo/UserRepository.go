@@ -17,8 +17,14 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 	}
 }
 
-func (repo *UserRepository) CreateUserInfo(req req.CreateUserReq) models.User {
-	user := models.User{OpenID: req.OpenId, CreateTime: time.Now()}
-	repo.db.Create(&user)
+func (repo *UserRepository) CreateUserInfo(req req.CreateUserReq) *models.User {
+	user := &models.User{OpenID: req.OpenId, CreateTime: time.Now()}
+	repo.db.Create(user)
+	return user
+}
+
+func (repo *UserRepository) QueryUserInfo(openId string) *models.User {
+	user := &models.User{}
+	repo.db.Where("open_id=?").First(user)
 	return user
 }

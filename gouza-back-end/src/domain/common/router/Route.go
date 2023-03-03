@@ -6,6 +6,7 @@ import (
 )
 
 const CREATE_USER_ROUTE string = "/api/user/create"
+const WX_LOGIN string = "/api/user/login"
 
 func AuthMiddleWare() gin.HandlerFunc {
 	return func(context *gin.Context) {
