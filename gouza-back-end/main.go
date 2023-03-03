@@ -8,6 +8,9 @@ import (
 func main() {
 	webServer := gin.New()
 	webServer.Use(gin.Recovery())
-	register.RegisterUserRoute(webServer)
-	webServer.Run(":9001")
+	register.UserRoute(webServer)
+	err := webServer.Run(":9001")
+	if err != nil {
+		panic(err)
+	}
 }

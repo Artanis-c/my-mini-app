@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func RegisterRoute(webServer *gin.Engine) {
+func UserRoute(webServer *gin.Engine) {
 	webServer.POST(router.CREATE_USER_ROUTE, func(context *gin.Context) {
 		action, _ := ioc.BuildUserAction()
 		var req req.CreateUserReq

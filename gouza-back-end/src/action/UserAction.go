@@ -21,8 +21,11 @@ func (ac *UserAction) CrateUserInfo(req req.CreateUserReq) result.Result {
 	return result.Success(user)
 }
 
+// Login 用户登录
 func (ac *UserAction) Login(req req.WxLoginReq) result.Result {
-	loginRes := ac.svc.WxLogin(req)
-
-	return result.Success(login)
+	loginRes, err := ac.svc.WxLogin(req)
+	if err != nil {
+		return result.Fail(err.Error())
+	}
+	return result.Success(loginRes)
 }

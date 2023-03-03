@@ -33,23 +33,24 @@ func (s *UserService) WxLogin(wxLoginReq req.WxLoginReq) (*models.User, error) {
 	if err != nil {
 		return nil, err
 	}
-	userInfo := s.userRepo.QueryUserInfo(session.OpenId)
-	if userInfo == nil {
-		userInfo := s.userRepo.CreateUserInfo(req.CreateUserReq{OpenId: session.OpenId})
+	if s.userRepo.QueryUserInfoExist(session.OpenId) {
+		userInfo := s.userRepo.QueryUserInfo(session.OpenId)
 		return userInfo, nil
 	}
+	userInfo := s.userRepo.CreateUserInfo(req.CreateUserReq{OpenId: session.OpenId})
 	return userInfo, nil
 }
 
 //Code2Session 置换微信OpenId
 func (s *UserService) Code2Session(req req.WxLoginReq) (*res.Code2SessionRes, error) {
+	wxInfo := s.userRepo.QueryWxInfo()
 	url := strings.Builder{}
 	url.WriteString(common.CODE_2_SESSION)
 	url.WriteString("?grant_type=authorization_code")
 	url.WriteString("&appid=")
-	url.WriteString(common.APP_ID)
+	url.WriteString(wxInfo.AppID)
 	url.WriteString("&secret=")
-	url.WriteString(common.APP_SECRET)
+	url.WriteString(wxInfo.AppSecret)
 	url.WriteString("&js_code=")
 	url.WriteString(req.Code)
 	reqUrl := url.String()
